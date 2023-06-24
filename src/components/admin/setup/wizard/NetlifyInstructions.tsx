@@ -1,4 +1,5 @@
 import React from 'react';
+import SpinnerIcon from '../../../icons/SpinnerIcon';
 
 const NetlifyInstructions = ({
   platform,
@@ -7,12 +8,14 @@ const NetlifyInstructions = ({
   platformApiKey,
   setPlatformApiKey,
   tokenError,
+  verifyApiKeyLoading = false,
 }: {
   platform: string;
   onActionBtn: any;
   platformApiKey: string;
   setPlatformApiKey: any;
   tokenError: string;
+  verifyApiKeyLoading: boolean;
   showPreviousBtn?: boolean;
 }) => {
   return (
@@ -80,7 +83,7 @@ const NetlifyInstructions = ({
             platformApiKey === '' ? 'bg-[#ccc]' : 'bg-[#4285F4] hover:bg-[#4285F4]/90 focus:ring-4 focus:ring-[#4285F4]/50'
           }`}
         >
-          Continue
+          {verifyApiKeyLoading ? <SpinnerIcon /> : `Continue`}
         </button>
       </div>
     </>

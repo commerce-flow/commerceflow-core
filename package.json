@@ -14,14 +14,9 @@
     "@trpc/next": "^10.27.1",
     "@trpc/react-query": "^10.27.1",
     "@trpc/server": "^10.27.1",
-    "@types/node": "18.16.0",
-    "@types/react": "18.0.38",
-    "@types/react-dom": "18.0.11",
     "airtable": "^0.12.1",
     "autoprefixer": "^10.4.14",
     "axios": "^1.4.0",
-    "eslint": "8.39.0",
-    "eslint-config-next": "13.3.1",
     "next": "13.3.1",
     "next-auth": "^4.22.1",
     "octokit": "^2.0.22",
@@ -29,9 +24,18 @@
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-icons": "^4.9.0",
+    "react-select": "^5.7.3",
+    "sweetalert": "^2.1.2",
     "swr": "^2.1.5",
     "tailwindcss": "^3.3.2",
     "typescript": "5.0.4",
     "zod": "^3.21.4"
+  },
+  "devDependencies": {
+    "@types/node": "^20.3.1",
+    "@types/react": "^18.2.13",
+    "@types/react-dom": "^18.2.6",
+    "eslint": "^8.43.0",
+    "eslint-config-next": "^13.4.6"
   }
 }

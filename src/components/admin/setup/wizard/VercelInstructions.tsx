@@ -7,12 +7,14 @@ const NetlifyInstructions = ({
   platformApiKey,
   setPlatformApiKey,
   tokenError,
+  verifyApiKeyLoading = false,
 }: {
   platform: string;
   onActionBtn: any;
   tokenError: string;
   platformApiKey: string;
   setPlatformApiKey: any;
+  verifyApiKeyLoading: boolean;
   showPreviousBtn?: boolean;
 }) => {
   return (

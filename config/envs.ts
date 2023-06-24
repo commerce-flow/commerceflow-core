@@ -1,13 +1,22 @@
+import { SupportedPlatforms } from '../src/types/constants';
+
 interface EnvType {
   webflow: {
     webflowClientId: string;
     webflowAuthUrl: string;
   };
+  platfrom: SupportedPlatforms | undefined;
   githubPatToken: string;
   airtableToken: string;
   netlifyToken?: string;
   vercelToken?: string;
 }
+
+const currentPlatform = (): SupportedPlatforms | undefined => {
+  if (process.env.CM_PLATFORM == null) throw new Error('Platform variable not set');
+
+  return (process.env.CM_PLATFORM?.toLowerCase() || '') === 'netlify' ? SupportedPlatforms.Netlify : SupportedPlatforms.Vercel;
+};
 
 const envs: EnvType = {
   webflow: {
@@ -18,6 +27,7 @@ const envs: EnvType = {
   airtableToken: process.env.AIRTABLE_PAT_TOKEN as string,
   vercelToken: process.env.VERCEL_TOKEN,
   netlifyToken: process.env.NETLIFY_TOKEN,
+  platfrom: currentPlatform(),
 };
 
 export default envs;
