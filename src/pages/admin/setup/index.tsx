@@ -16,24 +16,39 @@ const AdminSetup = () => {
   const [platformApiKey, setPlatformApiKey] = useState('');
   const [defaultAccount, setDefaultAccount] = useState<NetlifyAccount>();
   const [showNetlifyModal, setShowNetlifyModal] = useState(false);
-
+  const [platformData, setPlaformData] = useState<{
+    accounts: NetlifyAccount[];
+    sites: NetlifySite[];
+  }>({
+    accounts: [],
+    sites: [],
+  });
   const {
     refetch: verifyApiToken,
     isLoading: verifyApiTokenLoading,
     isFetching,
   } = trpc.platforms.verifyApiKey.useQuery({ apiKey: platformApiKey }, { enabled: false });
-
-  const [netlifyAccounts, netlifySites] = [trpc.platforms.fetchNetlifyAccounts.useQuery(), trpc.platforms.fetchNetlifySites.useQuery()];
-  // [{ data: [] }, { data: [] }];
-  // [trpc.platforms.fetchNetlifyAccounts.useQuery(), trpc.platforms.fetchNetlifySites.useQuery()];
+  const { refetch: netlifyAccounts } = trpc.platforms.fetchNetlifyAccounts.useQuery(undefined, { enabled: false });
+  const { refetch: netlifySites } = trpc.platforms.fetchNetlifySites.useQuery(undefined, { enabled: false });
   const systemScMutation = trpc.platforms.createAllSystemSecrets.useMutation();
 
   useEffect(() => {
-    if (netlifyAccounts.data?.length === 1) {
-      const defaultAccount = netlifyAccounts.data[0];
+    (async () => {
+      const [getAccounts, getSites] = [netlifyAccounts(), netlifySites()];
+
+      setPlaformData({
+        accounts: (await getAccounts).data || [],
+        sites: (await getSites).data || [],
+      });
+    })();
+  }, []);
+
+  useEffect(() => {
+    if (platformData.accounts.length === 1) {
+      const defaultAccount = platformData.accounts[0];
       setDefaultAccount(defaultAccount);
     }
-  }, [netlifyAccounts]);
+  }, [platformData.accounts]);
 
   const onActionBtn = async (btnState: 'next' | 'previous') => {
     setStepError('');
@@ -137,8 +152,8 @@ const AdminSetup = () => {
       <NetlifySetupModal
         isOpen={showNetlifyModal}
         onClose={() => setShowNetlifyModal(false)}
-        accounts={(netlifyAccounts?.data || []) as NetlifyAccount[]}
-        sites={(netlifySites?.data || []) as NetlifySite[]}
+        accounts={(platformData.accounts || []) as NetlifyAccount[]}
+        sites={(platformData.sites || []) as NetlifySite[]}
         defaultAccount={defaultAccount}
         onNetlifySiteOptionsSelected={onNetlifySiteOptionsSelected}
         loading={systemScMutation.isLoading}

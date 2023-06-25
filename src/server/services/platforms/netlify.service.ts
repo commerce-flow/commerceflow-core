@@ -24,7 +24,7 @@ class NetlifyService implements PlatformService {
     });
   }
 
-  async createSystemSecrets(secrets: SystemSecrets): Promise<void> {
+  async createSystemSecrets(secrets: SystemSecrets): Promise<PromiseSettledResult<void>[]> {
     const {
       airtableToken,
       githubToken,
@@ -33,12 +33,19 @@ class NetlifyService implements PlatformService {
     } = secrets;
     const { GITHUB_TOKEN, AIRTABLE_TOKEN, PLATFORM_META, PLATFORM_TOKEN } = SYSTEM_SECRETS;
 
-    await Promise.all([
-      this.storeSecret(GITHUB_TOKEN, githubToken, { accountId, siteId }),
-      this.storeSecret(AIRTABLE_TOKEN, airtableToken, { accountId, siteId }),
-      this.storeSecret(PLATFORM_TOKEN, platformToken, { accountId, siteId }),
-      this.storeSecret(PLATFORM_META, JSON.stringify({ accountId, siteId }), { accountId, siteId }),
-    ]);
+    try {
+      const accountInfo = { accountId, siteId };
+
+      return Promise.allSettled([
+        this.storeSecret(GITHUB_TOKEN, githubToken, accountInfo),
+        this.storeSecret(AIRTABLE_TOKEN, airtableToken, accountInfo),
+        this.storeSecret(PLATFORM_TOKEN, platformToken, accountInfo),
+        this.storeSecret(PLATFORM_META, JSON.stringify(accountInfo), accountInfo),
+      ]);
+    } catch (e: any) {
+      console.log(e.data, e.response.data);
+      return [];
+    }
   }
 
   verifySystemSecretsExist(): Promise<{}> {
@@ -61,14 +68,16 @@ class NetlifyService implements PlatformService {
   }
 
   async storeSecret(key: string, value: string, { accountId, siteId }: { accountId: string; siteId: string }): Promise<void> {
-    await this.client.post(`${this.urls.accounts}${accountId}/env?site_id=${siteId}`, {
-      key,
-      values: [
-        {
-          value,
-        },
-      ],
-    });
+    await this.client.post(`${this.urls.accounts}${accountId}/env?site_id=${siteId}`, [
+      {
+        key,
+        values: [
+          {
+            value,
+          },
+        ],
+      },
+    ]);
   }
 
   async getSecret(key: string, { accountId, siteId }: { accountId: string; siteId: string }): Promise<string> {

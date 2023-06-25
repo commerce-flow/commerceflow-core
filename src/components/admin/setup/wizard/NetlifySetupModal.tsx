@@ -43,9 +43,10 @@ const NetlifySetupModal = ({ isOpen, accounts = [], sites = [], defaultAccount, 
                   value: account.id,
                 }))}
                 name='account'
-                // options={options}
                 styles={colorStyles}
-                isDisabled={defaultAccount != null}
+                isClearable={false}
+                isSearchable={false}
+                menuIsOpen={false}
                 value={
                   defaultAccount
                     ? {
@@ -59,15 +60,14 @@ const NetlifySetupModal = ({ isOpen, accounts = [], sites = [], defaultAccount, 
 
             <div className='mb-6'>
               <label htmlFor='email' className='block mb-2 text-sm font-medium text-gray-900 dark:text-white'>
-                Select Project
+                Select Website
               </label>
               <Select
-                options={sites.map((account) => ({
-                  label: account.name,
-                  value: account.id,
+                options={sites.map((site) => ({
+                  label: site.name,
+                  value: site.id,
                 }))}
                 name='site'
-                // options={options}
                 styles={colorStyles}
               />
             </div>

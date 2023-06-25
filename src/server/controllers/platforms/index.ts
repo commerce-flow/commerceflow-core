@@ -19,9 +19,9 @@ export const fetchNetlifySites = () => {
   return netlifySvc.listSites();
 };
 
-export const createSystemSecrets = ({ ctx, input }: any) => {
+export const createSystemSecrets = async ({ ctx, input }: any) => {
   const platformSvc = getPlatformService(ctx.platform);
-  platformSvc.createSystemSecrets(input);
+  await platformSvc.createSystemSecrets(input);
 };
 
 export const verifySystemSecretsExist = () => {};
