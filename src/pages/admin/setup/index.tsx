@@ -1,13 +1,15 @@
 import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
 import { Instructions1, Instructions2, Instructions3, NetlifyInstructions, VercelInstructions } from '../../../components/admin/setup/wizard';
-import { SupportedPlatforms } from '../../../types/constants';
+import { PAGE_ROUTES, SupportedPlatforms } from '../../../types/constants';
 import NetlifySetupModal from '../../../components/admin/setup/wizard/NetlifySetupModal';
 import { trpc } from '../../../types/trpc';
 import { NetlifyAccount, NetlifySite } from '../../../types/platforms/netlify';
 import swal from 'sweetalert';
+import { useRouter } from 'next/router';
 
 const AdminSetup = () => {
+  const navigator = useRouter();
   const [currentStep, setCurrentStep] = useState<number>(0);
   const [platform] = useState<SupportedPlatforms>(SupportedPlatforms.Netlify);
   const [githubToken, setGithubToken] = useState<string>('');
@@ -115,7 +117,7 @@ const AdminSetup = () => {
     });
 
     if (systemScMutation.isSuccess) {
-      // TODO - Move to next step
+      navigator.push(PAGE_ROUTES.DASHBOARD);
     }
   };
 

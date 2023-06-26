@@ -9,3 +9,7 @@ export const SYSTEM_SECRETS = {
   PLATFORM_TOKEN: 'PLATFORM_TOKEN',
   PLATFORM_META: 'PLATFORM_META',
 };
+
+export const PAGE_ROUTES = {
+  DASHBOARD: '/store',
+};
