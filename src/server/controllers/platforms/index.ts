@@ -1,3 +1,5 @@
+import envs from '../../../../config/envs';
+import StorageFactory from '../../../internal/storage/factory';
 import { SystemSecrets } from '../../../types/platforms/secrets';
 import NetlifyService from '../../services/platforms/netlify.service';
 import getPlatformService from '../../services/platforms/platform-factory';
@@ -6,7 +8,6 @@ import { Context } from '../../trpc';
 export const verifyPlatformApiKey = ({ ctx }: { ctx: Context }) => {
   const platformSvc = getPlatformService(ctx.platform);
   return platformSvc.verifyApiKey();
-  // return { isLoading: false, data: {} };
 };
 
 export const fetchNetlifyAccounts = () => {
@@ -22,6 +23,11 @@ export const fetchNetlifySites = () => {
 export const createSystemSecrets = async ({ ctx, input }: any) => {
   const platformSvc = getPlatformService(ctx.platform);
   await platformSvc.createSystemSecrets(input);
+
+  const airtableToken = JSON.parse(input.airtableToken);
+
+  const storageAdp = StorageFactory.getStorage(airtableToken);
+  await storageAdp.init();
 };
 
 export const verifySystemSecretsExist = () => {};
