@@ -6,12 +6,10 @@ const NetlifyInstructions = ({
   onActionBtn,
   platformApiKey,
   setPlatformApiKey,
-  tokenError,
   verifyApiKeyLoading = false,
 }: {
   platform: string;
   onActionBtn: any;
-  tokenError: string;
   platformApiKey: string;
   setPlatformApiKey: any;
   verifyApiKeyLoading: boolean;
@@ -54,7 +52,6 @@ const NetlifyInstructions = ({
       <div className='mb-4'>
         <label htmlFor='name' className='block mb-2 text-sm font-medium text-gray-900 dark:text-white'>
           Enter <span className='capitalize'>{platform}</span> Token <br />
-          <span className='text-red-300 text-xs text-center flex'>{tokenError}</span>
         </label>
         <input
           type='text'

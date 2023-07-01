@@ -5,7 +5,7 @@ import envs from '../../config/envs';
 
 export const createContext = async (opts: CreateNextContextOptions) => {
   const session = await getSession({ req: opts.req });
-  const platform = envs.platfrom;
+  const platform = envs.platfrom();
   return {
     session,
     platform,
@@ -13,10 +13,6 @@ export const createContext = async (opts: CreateNextContextOptions) => {
 };
 export type Context = inferAsyncReturnType<typeof createContext>;
 
-// Avoid exporting the entire t-object
-// since it's not very descriptive.
-// For instance, the use of a t variable
-// is common in i18n libraries.
 const t = initTRPC.context<Context>().create();
 
 // Base router and procedure helpers

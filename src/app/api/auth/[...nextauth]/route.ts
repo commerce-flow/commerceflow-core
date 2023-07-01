@@ -1,29 +1,48 @@
-import NextAuth from 'next-auth';
-import GoogleProvider from 'next-auth/providers/google';
+import NextAuth, { User } from 'next-auth';
+import { JWT } from 'next-auth/jwt';
+import CredentialsProvider from 'next-auth/providers/credentials';
 
-const { GOOGLE_ADMIN_EMAIL, GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET } = process.env;
+const credentialsProvider = CredentialsProvider({
+  id: 'cred',
+  name: 'credentials',
+  credentials: {
+    username: {
+      label: 'Email',
+      type: 'text',
+      placeholder: 'johndoe@email.com',
+    },
+    password: { label: 'Password', type: 'password' },
+  },
+  async authorize(credentials, req) {
+    try {
+      /* const decodedPass = Buffer.from(credentials.password, 'base64').toString();
+
+      const resp = await axiosDefaultInstance.post('/auth/login', {
+        username: credentials.username,
+        password: decodedPass,
+      });
+
+      const { user, token } = resp.data.data;
+
+      return { ...user }; */
+      return { id: '' };
+    } catch (e) {
+      return null;
+    }
+  },
+});
+
+const jwt = ({ token, user }: Record<string, unknown>) => {
+  return {};
+};
 
 const handler = NextAuth({
-  providers: [
-    GoogleProvider({
-      clientId: GOOGLE_CLIENT_ID as string,
-      clientSecret: GOOGLE_CLIENT_SECRET as string,
-      authorization: {
-        params: {
-          prompt: 'consent',
-          access_type: 'offline',
-          response_type: 'code',
-        },
-      },
-    }),
-  ],
+  providers: [credentialsProvider],
   callbacks: {
-    async signIn({ account, profile }: any) {
-      if (account.provider === 'google') {
-        return profile.email_verified && profile.email === GOOGLE_ADMIN_EMAIL;
-      }
-      return false; // Do different verification for other providers that don't have `email_verified`
-    },
+    jwt,
+  },
+  session: {
+    strategy: 'jwt',
   },
 });
 

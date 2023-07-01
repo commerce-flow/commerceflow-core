@@ -7,14 +7,12 @@ const NetlifyInstructions = ({
   onActionBtn,
   platformApiKey,
   setPlatformApiKey,
-  tokenError,
   verifyApiKeyLoading = false,
 }: {
   platform: string;
   onActionBtn: any;
   platformApiKey: string;
   setPlatformApiKey: any;
-  tokenError: string;
   verifyApiKeyLoading: boolean;
   showPreviousBtn?: boolean;
 }) => {
@@ -28,7 +26,7 @@ const NetlifyInstructions = ({
         {`CommerceFlow will handle updates, app versions among other things. Also your Airtable and Github keys will not be used or stored outside your app, this step is to create an API key for ${platform} that will help CommerceFlow handle updates, manage your keys without storing them etc.`}
       </p>
 
-      <ol className='list-decimal list-inside mb-10 mt-10 text-sm'>
+      <ol className='list-decimal list-inside mb-10 mt-10 text-sm text-left'>
         <li className='pb-2 text-sm'>
           Create a personal access token
           <div className='w-full text-center mt-4 mb-2'>
@@ -52,9 +50,8 @@ const NetlifyInstructions = ({
       </ol>
 
       <div className='mb-4'>
-        <label htmlFor='name' className='block mb-2 text-sm font-medium text-gray-900 dark:text-white'>
+        <label htmlFor='name' className='block mb-2 text-sm font-medium text-gray-900 dark:text-white text-left'>
           Enter <span className='capitalize'>{platform}</span> Token <br />
-          <span className='text-red-300 text-xs text-center flex'>{tokenError}</span>
         </label>
         <input
           type='text'
@@ -62,6 +59,7 @@ const NetlifyInstructions = ({
           id='name'
           className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500'
           placeholder='e.g. xxxxx'
+          defaultValue={platformApiKey}
           onChange={(e) => setPlatformApiKey(e.target.value)}
         />
       </div>
