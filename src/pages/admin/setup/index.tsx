@@ -35,7 +35,7 @@ const AdminSetup = () => {
 
   const systemScMutation = trpc.platforms.createAllSystemSecrets.useMutation({
     onSuccess: () => {
-      navigator.push(PAGE_ROUTES.DASHBOARD);
+      navigator.push(PAGE_ROUTES.SIGNUP);
     },
     onError: () => {},
   });
@@ -127,10 +127,6 @@ const AdminSetup = () => {
         siteId: data.get('site')?.toString() as string,
       },
     });
-
-    /* if (systemScMutation.isSuccess) {
-      navigator.push(PAGE_ROUTES.DASHBOARD);
-    } */
   };
 
   const steps = [

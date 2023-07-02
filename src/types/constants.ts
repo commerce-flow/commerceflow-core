@@ -12,9 +12,11 @@ export const SYSTEM_SECRETS = {
   WEBFLOW_TOKENS: 'WEBFLOW_TOKENS',
   VERCEL_TOKEN: 'VERCEL_TOKEN',
   NETLIFY_TOKEN: 'NETLIFY_TOKEN',
+  NEXTAUTH_SECRET: 'NEXTAUTH_SECRET',
 };
 
 export const PAGE_ROUTES = {
   DASHBOARD: '/store',
-  SIGNUP: '/auth/signup',
+  SIGNUP: '/admin/auth/signup',
+  LOGIN: '/admin/auth/login',
 };

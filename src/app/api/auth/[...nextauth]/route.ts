@@ -38,6 +38,9 @@ const jwt = ({ token, user }: Record<string, unknown>) => {
 
 const handler = NextAuth({
   providers: [credentialsProvider],
+  pages: {
+    signIn: '/admin/auth/login',
+  },
   callbacks: {
     jwt,
   },
