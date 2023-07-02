@@ -1,6 +1,4 @@
-import envs from '../../../../config/envs';
 import StorageFactory from '../../../internal/storage/factory';
-import { SystemSecrets } from '../../../types/platforms/secrets';
 import NetlifyService from '../../services/platforms/netlify.service';
 import getPlatformService from '../../services/platforms/platform-factory';
 import { Context } from '../../trpc';
@@ -29,9 +27,3 @@ export const createSystemSecrets = async ({ ctx, input }: any) => {
   const storageAdp = StorageFactory.getStorage(airtableToken);
   await storageAdp.init();
 };
-
-export const verifySystemSecretsExist = () => {};
-
-export const createSecret = () => {};
-
-export const getSecret = () => {};

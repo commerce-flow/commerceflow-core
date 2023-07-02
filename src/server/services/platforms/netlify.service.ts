@@ -1,3 +1,4 @@
+import crypto from 'crypto';
 import axios, { AxiosInstance } from 'axios';
 import PlatformService from './base';
 import envs from '../../../../config/envs';
@@ -31,20 +32,21 @@ class NetlifyService implements PlatformService {
       platformToken,
       platformSiteMeta: { accountId, siteId },
     } = secrets;
-    const { GITHUB_TOKEN, AIRTABLE_TOKEN, PLATFORM_META, PLATFORM_TOKEN } = SYSTEM_SECRETS;
+    const { GITHUB_TOKEN, AIRTABLE_TOKEN, PLATFORM_META, PLATFORM_TOKEN, NEXTAUTH_SECRET } = SYSTEM_SECRETS;
 
     try {
       const accountInfo = { accountId, siteId };
-
+      const jwtSecret = crypto.randomBytes(32).toString('hex');
       return Promise.allSettled([
         this.storeSecret(GITHUB_TOKEN, githubToken, accountInfo),
         this.storeSecret(AIRTABLE_TOKEN, airtableToken, accountInfo),
         this.storeSecret(PLATFORM_TOKEN, platformToken, accountInfo),
         this.storeSecret(PLATFORM_META, JSON.stringify(accountInfo), accountInfo),
+        this.storeSecret(NEXTAUTH_SECRET, jwtSecret, accountInfo),
       ]);
     } catch (e: any) {
-      console.log(e.data, e.response.data);
-      return [];
+      // console.log(e.data, e.response.data);
+      throw e;
     }
   }
 

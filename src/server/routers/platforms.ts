@@ -12,8 +12,6 @@ export const platformsRouter = router({
     .query(platfromsCtrl.verifyPlatformApiKey),
   fetchNetlifyAccounts: procedure.query(platfromsCtrl.fetchNetlifyAccounts),
   fetchNetlifySites: procedure.query(platfromsCtrl.fetchNetlifySites),
-  createNewSecret: procedure.query(({ input }) => {}),
-  verifySystemSecretsExist: procedure.query(platfromsCtrl.verifySystemSecretsExist),
   createAllSystemSecrets: procedure
     .input(
       z.object({

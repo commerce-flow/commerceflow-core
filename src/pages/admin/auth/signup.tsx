@@ -16,7 +16,7 @@ const Signup = () => {
     <SetupLayout>
       <h1 className='text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white text-center pb-6'>Create your account</h1>
       <Formik initialValues={{ email: '', password: '', fullName: '' }} onSubmit={initiateLogin}>
-        {({ handleSubmit, values, handleBlur, handleChange }) => (
+        {({ handleSubmit, values, handleChange }) => (
           <form className='space-y-4 md:space-y-6' onSubmit={handleSubmit}>
             {formMessage.message && (
               <div
