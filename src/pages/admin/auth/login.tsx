@@ -1,23 +1,49 @@
 import React, { useState } from 'react';
 import { Formik } from 'formik';
+import { useRouter } from 'next/router';
+import { getCsrfToken } from 'next-auth/react';
 import { FiFrown } from 'react-icons/fi';
 import SetupLayout from '../../../components/layouts/SetupLayout';
+import { PAGE_ROUTES } from '../../../types/constants';
+import { signIn } from 'next-auth/react';
+import { GetServerSideProps } from 'next';
 
-const Login = () => {
+const Login = ({ csrfToken }: { csrfToken: string | undefined }) => {
+  const navigator = useRouter();
+
   const [formMessage, setFormMessage] = useState({
     isError: false,
     message: '',
   });
-  const initiateLogin = ({ email, password }: any) => {
-    console.log({ email, password });
+
+  const initiateLogin = async ({ email, password }: any) => {
+    const resp: any = await signIn('cred', {
+      email,
+      password,
+      redirect: false,
+    });
+
+    if (!resp.ok && resp.error) {
+      if (resp.status === 401) {
+        setFormMessage({
+          isError: true,
+          message: 'Invalid login credentials',
+        });
+      }
+    } else {
+      navigator.push(PAGE_ROUTES.DASHBOARD);
+    }
   };
 
   return (
     <SetupLayout>
-      <h1 className='text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white text-center pb-6'>Sign in to your account</h1>
+      <h1 className='text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white text-center pb-6' onClick={() => signIn()}>
+        Sign in to your account
+      </h1>
       <Formik initialValues={{ email: '', password: '' }} onSubmit={initiateLogin}>
-        {({ handleSubmit, values, handleBlur, handleChange }) => (
+        {({ handleSubmit, values, handleChange }) => (
           <form className='space-y-4 md:space-y-6' onSubmit={handleSubmit}>
+            <input name='csrfToken' type='hidden' defaultValue={csrfToken} />
             {formMessage.message && (
               <div
                 id='toast-simple'
@@ -90,6 +116,15 @@ const Login = () => {
       </Formik>
     </SetupLayout>
   );
+};
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const csrfToken = await getCsrfToken(context);
+  return {
+    props: {
+      csrfToken,
+    },
+  };
 };
 
 export default Login;

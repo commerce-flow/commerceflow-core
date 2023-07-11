@@ -1,12 +1,8 @@
-import { TableNames } from '../../../models/base';
+import { TableNames } from '../../../../models/base';
 
 const UserSchema = {
   name: TableNames.Users,
   schema: [
-    {
-      type: 'singleLineText',
-      name: '_id',
-    },
     {
       type: 'singleLineText',
       name: 'fullName',

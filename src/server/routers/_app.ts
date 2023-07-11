@@ -1,9 +1,10 @@
-import { z } from 'zod';
-import { procedure, router } from '../trpc';
+import { router } from '../trpc';
 import platformRoutes from './platforms';
+import authRoutes from './auth';
 
 export const appRouter = router({
   platforms: platformRoutes,
+  auth: authRoutes,
 });
 
 // export type definition of API

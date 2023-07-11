@@ -1,12 +1,13 @@
-import NextAuth, { User } from 'next-auth';
-import { JWT } from 'next-auth/jwt';
+import NextAuth from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
+import { appRouter } from '../../../../server/routers/_app';
+import { TRPCError } from '@trpc/server';
 
 const credentialsProvider = CredentialsProvider({
   id: 'cred',
   name: 'credentials',
   credentials: {
-    username: {
+    email: {
       label: 'Email',
       type: 'text',
       placeholder: 'johndoe@email.com',
@@ -15,25 +16,32 @@ const credentialsProvider = CredentialsProvider({
   },
   async authorize(credentials, req) {
     try {
-      /* const decodedPass = Buffer.from(credentials.password, 'base64').toString();
-
-      const resp = await axiosDefaultInstance.post('/auth/login', {
-        username: credentials.username,
-        password: decodedPass,
+      if (credentials?.email == null || credentials.password == null) {
+        throw new Error('Email and Password not provided!');
+      }
+      const caller = appRouter.createCaller({
+        session: null,
+        platform: undefined,
       });
 
-      const { user, token } = resp.data.data;
-
-      return { ...user }; */
-      return { id: '' };
-    } catch (e) {
+      const user = await caller.auth.login({ email: credentials?.email, password: credentials?.password });
+      return user;
+    } catch (cause) {
+      if (cause instanceof TRPCError) {
+        // log error
+        throw new Error(cause.message);
+      }
       return null;
     }
   },
 });
 
-const jwt = ({ token, user }: Record<string, unknown>) => {
-  return {};
+const jwt = ({ token, user, account }: any) => {
+  if (account && user) {
+    token.user = user;
+    return token;
+  }
+  return token;
 };
 
 const handler = NextAuth({
@@ -43,6 +51,10 @@ const handler = NextAuth({
   },
   callbacks: {
     jwt,
+    session: ({ session, token, user }: any): any => {
+      session.user = token.user;
+      return session;
+    },
   },
   session: {
     strategy: 'jwt',

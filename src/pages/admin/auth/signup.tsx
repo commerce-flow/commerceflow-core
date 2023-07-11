@@ -1,15 +1,37 @@
 import React, { useState } from 'react';
 import { Formik } from 'formik';
 import { FiFrown } from 'react-icons/fi';
+import { useRouter } from 'next/router';
 import SetupLayout from '../../../components/layouts/SetupLayout';
+import { trpc } from '../../../types/trpc';
+import { PAGE_ROUTES } from '../../../types/constants';
 
 const Signup = () => {
+  const navigator = useRouter();
+
   const [formMessage, setFormMessage] = useState({
     isError: false,
     message: '',
   });
+
+  const signup = trpc.auth.signup.useMutation({
+    onSuccess: () => {
+      navigator.push(PAGE_ROUTES.LOGIN);
+    },
+    onError: (e) => {
+      setFormMessage({
+        isError: true,
+        message: e.message,
+      });
+    },
+  });
+
   const initiateLogin = ({ email, password, fullName }: any) => {
-    console.log({ email, password, fullName });
+    signup.mutate({
+      email,
+      fullName,
+      password,
+    });
   };
 
   return (
@@ -21,7 +43,7 @@ const Signup = () => {
             {formMessage.message && (
               <div
                 id='toast-simple'
-                className='flex items-center w-full max-w-xs p-4 space-x-4 text-gray-500 bg-white divide-x divide-gray-200 rounded-lg shadow dark:text-gray-400 dark:divide-gray-700 space-x dark:bg-gray-800'
+                className='flex items-center w-full p-4 space-x-4 text-gray-500 bg-white divide-x divide-gray-200 rounded-lg shadow dark:text-gray-400 dark:divide-gray-700 space-x dark:bg-gray-800'
                 role='alert'
               >
                 <FiFrown width={8} height={8} />

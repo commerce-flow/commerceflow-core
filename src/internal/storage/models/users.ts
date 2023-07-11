@@ -1,21 +1,21 @@
 import { BaseModel } from './base';
 
-enum UserRoleEnum {
+export enum UserRoleEnum {
   ADMIN = 'admin',
 }
 
-enum UserStatus {
+export enum UserStatus {
   ACTIVE = 'active',
 }
 
 export interface UsersModel extends BaseModel {
   fullName: string;
   email: string;
-  password: string;
-  createdAt: Date;
-  updatedAt: Date | null;
-  deletedAt: Date | null;
-  lastLogin: Date | null;
-  role: UserRoleEnum;
-  status: UserStatus;
+  password?: string;
+  createdTime: Date;
+  updatedTime?: Date | null;
+  deletedTime?: Date | null;
+  lastLogin?: Date | null;
+  role?: UserRoleEnum;
+  status?: UserStatus;
 }
