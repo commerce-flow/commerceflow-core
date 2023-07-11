@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import { procedure, router } from '../trpc';
-import * as platfromsCtrl from '../controllers/platforms';
+import * as authCtrl from '../controllers/auth';
 
 export const authRouter = router({
   signup: procedure
@@ -11,7 +11,7 @@ export const authRouter = router({
         fullName: z.string(),
       })
     )
-    .mutation(platfromsCtrl.createSystemSecrets),
+    .mutation(authCtrl.signup),
   login: procedure
     .input(
       z.object({
@@ -19,7 +19,7 @@ export const authRouter = router({
         password: z.string(),
       })
     )
-    .mutation(platfromsCtrl.createSystemSecrets),
+    .mutation(authCtrl.login),
 });
 
 export default authRouter;

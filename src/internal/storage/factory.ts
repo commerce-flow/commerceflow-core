@@ -2,10 +2,15 @@ import envs from '../../../config/envs';
 import BaseStorageAdapter from './adapters';
 import AirtableAdapter from './adapters/airtable';
 
-const StorageFactory = {
-  getStorage: (options: Record<string, unknown>): BaseStorageAdapter => {
-    return new AirtableAdapter(options.token as string, options.workspaceId as string);
+const StorageAdapterFactory = {
+  getStorage: (options?: Record<string, unknown>): BaseStorageAdapter => {
+    let creds: any = options;
+    if (!options) {
+      creds = envs.airtable();
+    }
+
+    return new AirtableAdapter(creds.token as string, creds.workspaceId as string, creds.baseId);
   },
 };
 
-export default StorageFactory;
+export default StorageAdapterFactory;

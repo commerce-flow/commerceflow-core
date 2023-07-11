@@ -1,4 +1,5 @@
 export interface BaseModel {
+  id: string;
   _tableName: string;
 }
 

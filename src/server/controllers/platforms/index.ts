@@ -1,4 +1,4 @@
-import StorageFactory from '../../../internal/storage/factory';
+import StorageAdapterFactory from '../../../internal/storage/factory';
 import NetlifyService from '../../services/platforms/netlify.service';
 import getPlatformService from '../../services/platforms/platform-factory';
 import { Context } from '../../trpc';
@@ -19,11 +19,15 @@ export const fetchNetlifySites = () => {
 };
 
 export const createSystemSecrets = async ({ ctx, input }: any) => {
-  const platformSvc = getPlatformService(ctx.platform);
-  await platformSvc.createSystemSecrets(input);
-
   const airtableToken = JSON.parse(input.airtableToken);
 
-  const storageAdp = StorageFactory.getStorage(airtableToken);
-  await storageAdp.init();
+  const storageAdp = StorageAdapterFactory.getStorage(airtableToken);
+  const { baseId } = await storageAdp.init();
+
+  airtableToken.baseId = baseId;
+  const platformSvc = getPlatformService(ctx.platform);
+  await platformSvc.createSystemSecrets({
+    ...input,
+    airtableToken: JSON.stringify(airtableToken),
+  });
 };
