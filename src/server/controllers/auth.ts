@@ -30,8 +30,6 @@ export const signup = async ({ input }: { ctx: Context; input: { email: string; 
     status: UserStatus.ACTIVE,
   });
 
-  console.log({ res });
-
   return res;
 };
 

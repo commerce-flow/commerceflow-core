@@ -1,7 +1,7 @@
-import StorageAdapterFactory from '../../../internal/storage/factory';
-import NetlifyService from '../../services/platforms/netlify.service';
-import getPlatformService from '../../services/platforms/platform-factory';
-import { Context } from '../../trpc';
+import StorageAdapterFactory from '../../internal/storage/factory';
+import NetlifyService from '../services/platforms/netlify.service';
+import getPlatformService from '../services/platforms/platform-factory';
+import { Context } from '../trpc';
 
 export const verifyPlatformApiKey = ({ ctx }: { ctx: Context }) => {
   const platformSvc = getPlatformService(ctx.platform);

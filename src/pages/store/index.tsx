@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import MainLayout from '../../components/layouts/MainLayout';
 import { GetServerSideProps } from 'next/types';
 import { getToken } from 'next-auth/jwt';
