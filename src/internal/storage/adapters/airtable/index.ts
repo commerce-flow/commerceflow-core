@@ -2,6 +2,8 @@ import Airtable, { FieldSet, Record as AirtableRecord } from 'airtable';
 import BaseStorageAdapter from '..';
 import axios, { AxiosInstance } from 'axios';
 import AirtableMigrations from './migrations';
+import { AirtableBaseResponse, AirtableBaseType } from '../../../../types/airtable';
+import { DatabaseName } from '../../models/base';
 
 class AirtableAdapter implements BaseStorageAdapter {
   private airtable: Airtable;
@@ -20,8 +22,24 @@ class AirtableAdapter implements BaseStorageAdapter {
   }
 
   async init(): Promise<Record<string, unknown>> {
-    const migrations = new AirtableMigrations(this.httpClient, this.workspaceId);
-    const baseId = await migrations.runAllMigrations();
+    const atBaseRes = await this.httpClient.get<AirtableBaseResponse>('/meta/bases');
+    const { bases = [] } = atBaseRes.data;
+
+    let baseFound: AirtableBaseType | undefined = undefined;
+
+    bases.forEach((base: AirtableBaseType) => {
+      if (base.name === DatabaseName) {
+        baseFound = base;
+      }
+    });
+
+    let baseId = '';
+    if (!baseFound) {
+      const migrations = new AirtableMigrations(this.httpClient, this.workspaceId);
+      baseId = await migrations.runAllMigrations();
+    } else {
+      baseId = (baseFound as AirtableBaseType)?.id;
+    }
 
     return {
       baseId,

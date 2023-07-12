@@ -6,3 +6,5 @@ export interface BaseModel {
 export const TableNames = {
   Users: 'users',
 };
+
+export const DatabaseName = 'CommerceFlow';
