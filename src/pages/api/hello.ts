@@ -17,6 +17,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
 
   // const resp = await octokit.request('GET /meta');
   const { data }: any = await gitApp.octokit.request('GET /app/installations');
-  console.log({ data });
+
   res.status(200).json({ name: 'John Doe' });
 }

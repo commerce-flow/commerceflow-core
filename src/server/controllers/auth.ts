@@ -54,6 +54,6 @@ export const login = async ({ input }: { ctx: Context; input: { email: string; p
   const lastLogin = new Date();
   await usersRepo.updateUser(user.id, { lastLogin });
   delete user.password;
-  console.log('login controller', { user });
+
   return user;
 };
