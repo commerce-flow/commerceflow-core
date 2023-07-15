@@ -17,6 +17,7 @@ export interface EnvType {
   appConfig: () => Record<string, unknown>;
   netlifyToken?: string;
   vercelToken?: string;
+  url: string; // Netlify base url for site
 }
 
 const currentPlatform = (): SupportedPlatforms | undefined => {
@@ -77,6 +78,7 @@ const envs: EnvType = {
   netlifyToken: process.env[SYSTEM_SECRETS.NETLIFY_TOKEN],
   platfrom: currentPlatform,
   appConfig: parseAppConfig,
+  url: process.env.URL as string,
 };
 
 export default envs;

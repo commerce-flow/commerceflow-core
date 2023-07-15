@@ -7,31 +7,37 @@ import SetupLayout from '../../../components/layouts/SetupLayout';
 import { PAGE_ROUTES } from '../../../types/constants';
 import { signIn } from 'next-auth/react';
 import { GetServerSideProps } from 'next';
+import SpinnerIcon from '../../../components/icons/SpinnerIcon';
 
 const Login = ({ csrfToken }: { csrfToken: string | undefined }) => {
   const navigator = useRouter();
-
+  const [isLoading, setIsLoading] = useState(false);
   const [formMessage, setFormMessage] = useState({
     isError: false,
     message: '',
   });
 
   const initiateLogin = async ({ email, password }: any) => {
-    const resp: any = await signIn('cred', {
-      email,
-      password,
-      redirect: false,
-    });
-
-    if (!resp.ok && resp.error) {
-      if (resp.status === 401) {
-        setFormMessage({
-          isError: true,
-          message: 'Invalid login credentials',
-        });
+    setIsLoading(true);
+    try {
+      const resp: any = await signIn('cred', {
+        email,
+        password,
+        redirect: false,
+      });
+      setIsLoading(false);
+      if (!resp.ok && resp.error) {
+        if (resp.status === 401) {
+          setFormMessage({
+            isError: true,
+            message: 'Invalid login credentials',
+          });
+        }
+      } else {
+        navigator.push(PAGE_ROUTES.DASHBOARD);
       }
-    } else {
-      navigator.push(PAGE_ROUTES.DASHBOARD);
+    } catch (e) {
+      setIsLoading(false);
     }
   };
 
@@ -84,8 +90,8 @@ const Login = ({ csrfToken }: { csrfToken: string | undefined }) => {
                 required
               />
             </div>
-            <div className='flex items-center justify-between'>
-              {/* <div className='flex items-start'>
+            {/* <div className='flex items-center justify-between'>
+              <div className='flex items-start'>
                 <div className='flex items-center h-5'>
                   <input
                     id='remember'
@@ -100,16 +106,16 @@ const Login = ({ csrfToken }: { csrfToken: string | undefined }) => {
                     Remember me
                   </label>
                 </div>
-              </div> */}
+              </div>
               <a href='#' className='text-sm font-medium text-primary-600 hover:underline dark:text-primary-500'>
                 Forgot password?
               </a>
-            </div>
+            </div> */}
             <button
               type='submit'
               className='w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800'
             >
-              Sign in
+              {isLoading ? <SpinnerIcon /> : `Sign In`}
             </button>
           </form>
         )}

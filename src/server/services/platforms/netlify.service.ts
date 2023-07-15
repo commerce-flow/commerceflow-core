@@ -31,8 +31,9 @@ class NetlifyService implements PlatformService {
       githubToken,
       platformToken,
       platformSiteMeta: { accountId, siteId },
+      webflowTokens,
     } = secrets;
-    const { GITHUB_TOKEN, AIRTABLE_TOKEN, PLATFORM_META, PLATFORM_TOKEN, NEXTAUTH_SECRET } = SYSTEM_SECRETS;
+    const { GITHUB_TOKEN, AIRTABLE_TOKEN, PLATFORM_META, PLATFORM_TOKEN, NEXTAUTH_SECRET, WEBFLOW_TOKENS } = SYSTEM_SECRETS;
 
     try {
       const accountInfo = { accountId, siteId };
@@ -43,6 +44,7 @@ class NetlifyService implements PlatformService {
         this.storeSecret(PLATFORM_TOKEN, platformToken, accountInfo),
         this.storeSecret(PLATFORM_META, JSON.stringify(accountInfo), accountInfo),
         this.storeSecret(NEXTAUTH_SECRET, jwtSecret, accountInfo),
+        this.storeSecret(WEBFLOW_TOKENS, webflowTokens, accountInfo),
       ]);
     } catch (e: any) {
       // console.log(e.data, e.response.data);
