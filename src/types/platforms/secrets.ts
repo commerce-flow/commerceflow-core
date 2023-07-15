@@ -6,4 +6,5 @@ export interface SystemSecrets {
     siteId: string;
     accountId: string;
   };
+  webflowTokens: string;
 }

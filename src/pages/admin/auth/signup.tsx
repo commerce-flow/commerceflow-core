@@ -5,6 +5,7 @@ import { useRouter } from 'next/router';
 import SetupLayout from '../../../components/layouts/SetupLayout';
 import { trpc } from '../../../types/trpc';
 import { PAGE_ROUTES } from '../../../types/constants';
+import SpinnerIcon from '../../../components/icons/SpinnerIcon';
 
 const Signup = () => {
   const navigator = useRouter();
@@ -101,7 +102,7 @@ const Signup = () => {
               type='submit'
               className='w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800'
             >
-              Sign up
+              {signup.isLoading ? <SpinnerIcon /> : `Sign up`}
             </button>
           </form>
         )}

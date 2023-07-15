@@ -22,6 +22,7 @@ export const platformsRouter = router({
           siteId: z.string(),
           accountId: z.string(),
         }),
+        webflowTokens: z.string(),
       })
     )
     .mutation(platfromsCtrl.createSystemSecrets),

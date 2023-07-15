@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Instructions1, Instructions2, Instructions3, NetlifyInstructions, VercelInstructions } from '../../../components/admin/setup/wizard';
+import { WelcomeInstruction, GithubSetup, AirtableSetup, NetlifyInstructions, VercelInstructions, WebflowSetup } from '../../../components/admin/setup/wizard';
 import { PAGE_ROUTES, SupportedPlatforms } from '../../../types/constants';
 import NetlifySetupModal from '../../../components/admin/setup/wizard/NetlifySetupModal';
 import { trpc } from '../../../types/trpc';
@@ -24,6 +24,7 @@ const AdminSetup = () => {
     accounts: [],
     sites: [],
   });
+  const [webflowTokens, setWebflowTokens] = useState<{ id: string; secret: string }>({ id: '', secret: '' });
 
   const {
     refetch: verifyApiToken,
@@ -61,7 +62,7 @@ const AdminSetup = () => {
   const onActionBtn = async (btnState: 'next' | 'previous') => {
     if (btnState === 'next') {
       // github
-      if (currentStep === 1) {
+      if (currentStep === 2) {
         const gToken = githubToken.trim();
         const isValid = /^github_pat_.*/g.test(gToken);
 
@@ -77,7 +78,7 @@ const AdminSetup = () => {
       }
 
       // airtable
-      if (currentStep === 2) {
+      if (currentStep === 3) {
         const isValid = /^pat.*/g.test(airtable.token);
 
         if (!isValid) {
@@ -92,7 +93,7 @@ const AdminSetup = () => {
       }
 
       // Platform step
-      if (currentStep === 3) {
+      if (currentStep === 4) {
         const resp = await verifyApiToken();
         if (!resp.data) {
           swal({
@@ -126,13 +127,18 @@ const AdminSetup = () => {
         accountId: data.get('account')?.toString() as string,
         siteId: data.get('site')?.toString() as string,
       },
+      webflowTokens: JSON.stringify({
+        id: webflowTokens.id,
+        secret: webflowTokens.secret,
+      }),
     });
   };
 
   const steps = [
-    { component: <Instructions1 platform={platform} onActionBtn={onActionBtn} showPreviousBtn={false} /> },
-    { component: <Instructions2 onActionBtn={onActionBtn} setGithubToken={setGithubToken} githubToken={githubToken} /> },
-    { component: <Instructions3 onActionBtn={onActionBtn} airtable={airtable} setAirtableToken={setAirtableToken} /> },
+    { component: <WelcomeInstruction platform={platform} onActionBtn={onActionBtn} showPreviousBtn={false} /> },
+    { component: <WebflowSetup onActionBtn={onActionBtn} setWebfloTokens={setWebflowTokens} webflowTokens={webflowTokens} siteBaseUrl='localhost:3000' /> },
+    { component: <GithubSetup onActionBtn={onActionBtn} setGithubToken={setGithubToken} githubToken={githubToken} /> },
+    { component: <AirtableSetup onActionBtn={onActionBtn} airtable={airtable} setAirtableToken={setAirtableToken} /> },
     {
       component:
         platform === SupportedPlatforms.Netlify ? (

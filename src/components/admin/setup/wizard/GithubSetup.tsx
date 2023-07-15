@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Instructions2 = ({
+const GithubSetup = ({
   githubToken,
   showPreviousBtn = true,
   onActionBtn,
@@ -95,4 +95,4 @@ const Instructions2 = ({
   );
 };
 
-export default Instructions2;
+export default GithubSetup;

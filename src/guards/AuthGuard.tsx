@@ -10,7 +10,7 @@ const AuthGuard = ({ children, pathName }: PropsWithChildren<{ pathName: string 
   const navigator = useRouter();
 
   useEffect(() => {
-    if (session?.user && unprotectedRoutes.includes(pathName)) {
+    /* if (session?.user && unprotectedRoutes.includes(pathName)) {
       navigator.push(PAGE_ROUTES.DASHBOARD);
       return;
     }
@@ -18,7 +18,7 @@ const AuthGuard = ({ children, pathName }: PropsWithChildren<{ pathName: string 
     if (!session?.user) {
       navigator.push(PAGE_ROUTES.LOGIN);
       return;
-    }
+    } */
   }, [session?.user]);
 
   if (status === 'loading') {

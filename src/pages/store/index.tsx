@@ -1,23 +1,14 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import MainLayout from '../../components/layouts/MainLayout';
-import { GetServerSideProps } from 'next/types';
-import { getToken } from 'next-auth/jwt';
 
 const Dashboard = () => {
   return (
     <MainLayout>
-      <h1 className='text-4xl text-black'></h1>
+      <div className='flex justify-center items-center w-full'>
+        <div className='w-1/2 flex items-center justify-center p-6'></div>
+      </div>
     </MainLayout>
   );
-};
-
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  const { req } = context;
-  await getToken({ req });
-
-  return {
-    props: {},
-  };
 };
 
 export default Dashboard;
