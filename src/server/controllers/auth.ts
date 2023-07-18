@@ -4,6 +4,8 @@ import StorageAdapterFactory from '../../internal/storage/factory';
 import { UserRoleEnum, UserStatus } from '../../internal/storage/models/users';
 import { Context } from '../trpc';
 import bcrypt from 'bcrypt';
+import envs from '../../../config/envs';
+import axios from 'axios';
 
 export const signup = async ({ input }: { ctx: Context; input: { email: string; password: string; fullName: string } }) => {
   const { password } = input;
@@ -56,4 +58,26 @@ export const login = async ({ input }: { ctx: Context; input: { email: string; p
   delete user.password;
 
   return user;
+};
+
+export const getClientEnvs = async () => {
+  const wbFlow = envs.webflow();
+
+  return {
+    webflow: {
+      clientId: wbFlow.clientId,
+    },
+  };
+};
+
+export const requestWebflowOauthAccessToken = async ({ input }: { ctx: Context; input: { authCode: string } }) => {
+  const wbFlow = envs.webflow();
+  const resp = await axios.post<{ token_type: string; access_token: string }>(`${wbFlow.apiUrl}/oauth/access_token`, {
+    client_id: wbFlow.clientId,
+    client_secret: wbFlow.secret,
+    code: input.authCode,
+    grant_type: 'authorization_code',
+  });
+
+  return resp.data;
 };

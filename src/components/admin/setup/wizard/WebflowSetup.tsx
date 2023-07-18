@@ -9,7 +9,7 @@ const WebfloSetup = ({
 }: {
   onActionBtn: any;
   showPreviousBtn?: boolean;
-  webflowTokens: { id: string; secret: string };
+  webflowTokens: { clientId: string; secret: string };
   setWebfloTokens: any;
   siteBaseUrl: string;
 }) => {
@@ -30,8 +30,7 @@ const WebfloSetup = ({
         </li>
 
         <li className='pb-2 text-sm'>
-          Follow these instructions to register Commerceflow as an app. Remember to add the url in the next step as the redirect URL when registering
-          CommerceFlow as an app.
+          Follow these instructions to register Commerceflow as an app. You must add the url in the next step as the redirect URL for the CommerceFlow app.
           <div className='w-full text-center mb-2'>
             <a target='_blank' href='https://docs.developers.webflow.com/docs/oauth#app-registration' className='text-blue-300'>
               https://docs.developers.webflow.com/docs/oauth#app-registration
@@ -60,10 +59,10 @@ const WebfloSetup = ({
             type='text'
             name='id'
             id='webflowId'
-            defaultValue={webflowTokens.id}
+            defaultValue={webflowTokens.clientId}
             className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500'
             placeholder='e.g. xxxxx'
-            onChange={(e) => setWebfloTokens({ ...webflowTokens, id: e.target.value })}
+            onChange={(e) => setWebfloTokens({ ...webflowTokens, clientId: e.target.value })}
           />
         </div>
         <div className='flex flex-col flex-1'>
@@ -94,10 +93,12 @@ const WebfloSetup = ({
 
         <button
           type='button'
-          disabled={webflowTokens.id === '' && webflowTokens.secret === ''}
+          disabled={webflowTokens.clientId === '' && webflowTokens.secret === ''}
           onClick={() => onActionBtn('next')}
           className={`text-white focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center mr-2 mb-2 ${
-            webflowTokens.id === '' || webflowTokens.secret === '' ? 'bg-[#ccc]' : 'bg-[#4285F4] hover:bg-[#4285F4]/90 focus:ring-4 focus:ring-[#4285F4]/50'
+            webflowTokens.clientId === '' || webflowTokens.secret === ''
+              ? 'bg-[#ccc]'
+              : 'bg-[#4285F4] hover:bg-[#4285F4]/90 focus:ring-4 focus:ring-[#4285F4]/50'
           }`}
         >
           Continue

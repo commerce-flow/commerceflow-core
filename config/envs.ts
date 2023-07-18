@@ -4,7 +4,7 @@ export interface EnvType {
   webflow: () => {
     clientId: string;
     secret: string;
-    authUrl: string;
+    apiUrl: string;
   };
   platfrom: () => SupportedPlatforms | undefined;
   githubPatToken: string;
@@ -37,7 +37,7 @@ const parseWebflowTokens = () => {
   }
 
   return {
-    authUrl: 'https://webflow.com/oauth/authorize/',
+    apiUrl: 'https://api.webflow.com',
     clientId,
     secret,
   };

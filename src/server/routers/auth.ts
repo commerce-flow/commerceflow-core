@@ -20,6 +20,14 @@ export const authRouter = router({
       })
     )
     .mutation(authCtrl.login),
+  clientEnvs: procedure.query(authCtrl.getClientEnvs),
+  requestWebflowOauthToken: procedure
+    .input(
+      z.object({
+        authCode: z.string(),
+      })
+    )
+    .mutation(authCtrl.requestWebflowOauthAccessToken),
 });
 
 export default authRouter;

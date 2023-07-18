@@ -22,7 +22,7 @@ export const createSystemSecrets = async ({ ctx, input }: any) => {
   const airtableToken = JSON.parse(input.airtableToken);
 
   const storageAdp = StorageAdapterFactory.getStorage(airtableToken);
-  const { baseId } = await storageAdp.init();
+  const { baseId } = await storageAdp.setupDb();
 
   airtableToken.baseId = baseId;
   const platformSvc = getPlatformService(ctx.platform);
