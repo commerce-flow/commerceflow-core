@@ -1,7 +1,7 @@
 import BaseRepository from '../../repos/base';
 
 export default interface BaseStorageAdapter {
-  init(): Promise<Record<string, unknown>>;
+  setupDb(): Promise<Record<string, unknown>>;
   createRecord<Args, Res>(tableName: string, data: Args): Promise<Res>;
   getRecordByFields(tableName: string, fields: Record<string, unknown>): Promise<BaseStorageAdapter>;
   getRecordById<Res>(tableName: string, id: string): Promise<Res>;

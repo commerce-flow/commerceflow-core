@@ -24,7 +24,7 @@ const AdminSetup = () => {
     accounts: [],
     sites: [],
   });
-  const [webflowTokens, setWebflowTokens] = useState<{ id: string; secret: string }>({ id: '', secret: '' });
+  const [webflowTokens, setWebflowTokens] = useState<{ clientId: string; secret: string }>({ clientId: '', secret: '' });
 
   const {
     refetch: verifyApiToken,
@@ -128,7 +128,7 @@ const AdminSetup = () => {
         siteId: data.get('site')?.toString() as string,
       },
       webflowTokens: JSON.stringify({
-        id: webflowTokens.id,
+        clientId: webflowTokens.clientId,
         secret: webflowTokens.secret,
       }),
     });

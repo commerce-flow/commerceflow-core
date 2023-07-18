@@ -4,6 +4,7 @@ import axios, { AxiosInstance } from 'axios';
 import AirtableMigrations from './migrations';
 import { AirtableBaseResponse, AirtableBaseType } from '../../../../types/airtable';
 import { DatabaseName } from '../../models/base';
+import DatabaseCredentialsError from '../../../../errors/database';
 
 class AirtableAdapter implements BaseStorageAdapter {
   private airtable: Airtable;
@@ -21,7 +22,17 @@ class AirtableAdapter implements BaseStorageAdapter {
     });
   }
 
-  async init(): Promise<Record<string, unknown>> {
+  async ensureMigrations(): Promise<Record<string, unknown>> {
+    if (!this.baseId) {
+      throw new DatabaseCredentialsError('Missing baseId for airtable');
+    }
+    const migrations = new AirtableMigrations(this.httpClient, this.workspaceId);
+    const tables = await migrations.runMigrations(this.baseId as string);
+    console.log({ tables });
+    return {};
+  }
+
+  async setupDb(): Promise<Record<string, unknown>> {
     const atBaseRes = await this.httpClient.get<AirtableBaseResponse>('/meta/bases');
     const { bases = [] } = atBaseRes.data;
 
@@ -36,7 +47,7 @@ class AirtableAdapter implements BaseStorageAdapter {
     let baseId = '';
     if (!baseFound) {
       const migrations = new AirtableMigrations(this.httpClient, this.workspaceId);
-      baseId = await migrations.runAllMigrations();
+      baseId = await migrations.createBase();
     } else {
       baseId = (baseFound as AirtableBaseType)?.id;
     }
