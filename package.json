@@ -19,6 +19,7 @@
     "axios": "^1.4.0",
     "bcrypt": "^5.1.0",
     "formik": "^2.4.2",
+    "lodash": "^4.17.21",
     "next": "13.3.1",
     "next-auth": "^4.22.1",
     "octokit": "^2.0.22",
@@ -36,6 +37,7 @@
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.0",
+    "@types/lodash": "^4.14.195",
     "@types/node": "^20.3.1",
     "@types/react": "^18.2.13",
     "@types/react-dom": "^18.2.6",

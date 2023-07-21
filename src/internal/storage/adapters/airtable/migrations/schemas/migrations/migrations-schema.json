@@ -1,0 +1,10 @@
+[
+  {
+    "type": "singleLineText",
+    "name": "id"
+  },
+  {
+    "type": "singleLineText",
+    "name": "name"
+  }
+]

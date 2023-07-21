@@ -15,4 +15,26 @@ export interface AirtableBaseType {
   permissionLevel: string;
 }
 
+export interface AirtableCreateTableResponse {
+  description: string;
+  fields: [
+    {
+      description: string;
+      id: string;
+      name: string;
+      type: string;
+    }
+  ];
+  id: string;
+  name: string;
+  primaryFieldId: string;
+  views: [
+    {
+      id: string;
+      name: string;
+      type: string;
+    }
+  ];
+}
+
 const Constants = {};

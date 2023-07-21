@@ -1,0 +1,10 @@
+[
+  {
+    "type": "singleLineText",
+    "name": "accessToken"
+  },
+  {
+    "type": "multilineText",
+    "name": "rawPayload"
+  }
+]

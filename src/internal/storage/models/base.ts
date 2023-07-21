@@ -7,6 +7,7 @@ export const TableNames = {
   Users: 'users',
   Authorizations: 'authorizations',
   Sites: 'sites',
+  Migrations: 'migrations',
 };
 
 export const DatabaseName = 'CommerceFlow';

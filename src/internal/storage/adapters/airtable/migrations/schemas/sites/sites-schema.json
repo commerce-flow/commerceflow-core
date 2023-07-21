@@ -1,0 +1,22 @@
+[
+  {
+    "type": "singleLineText",
+    "name": "externalId"
+  },
+  {
+    "type": "singleLineText",
+    "name": "name"
+  },
+  {
+    "type": "singleLineText",
+    "name": "isActive"
+  },
+  {
+    "type": "singleLineText",
+    "name": "shortName"
+  },
+  {
+    "type": "multilineText",
+    "name": "rawPayload"
+  }
+]

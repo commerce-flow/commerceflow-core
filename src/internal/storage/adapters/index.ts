@@ -1,5 +1,3 @@
-import BaseRepository from '../../repos/base';
-
 export default interface BaseStorageAdapter {
   setupDb(): Promise<Record<string, unknown>>;
   createRecord<Args, Res>(tableName: string, data: Args): Promise<Res>;
@@ -9,4 +7,5 @@ export default interface BaseStorageAdapter {
   many<Res>(): Res[];
   updateRecordById<Args extends {}, Res extends {}>(tableName: string, id: string, newData: Args): Promise<Res>;
   existsByQuery(tableName: string, fields: Record<string, unknown>): Promise<boolean>;
+  getStorageUtils?<T>(): T;
 }
